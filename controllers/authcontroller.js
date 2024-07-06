@@ -27,11 +27,15 @@ exports.register = async (req, res) => {
       phone,
     });
 
+    console.log('Created User:', user);
+
     const org = await Organisation.create({
       orgId: `org-${userId}`,
       name: `${firstName}'s Organisation`,
       description: `${firstName}'s default organisation`
     });
+
+    console.log('Created Organisation:', org);
 
     await user.addOrganisation(org);
 
@@ -52,6 +56,7 @@ exports.register = async (req, res) => {
       }
     });
   } catch (error) {
+    console.error('Registration Error:', error);  // Log the error for debugging
     res.status(400).json({
       status: 'Bad request',
       message: 'Registration unsuccessful',
