@@ -5,7 +5,7 @@ const User = sequelize.define('User', {
   userId: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
+    primaryKey: true,
   },
   firstName: {
     type: DataTypes.STRING,
@@ -26,47 +26,14 @@ const User = sequelize.define('User', {
   },
   phone: {
     type: DataTypes.STRING,
+    allowNull: false,
   },
+}, {
+  tableName: 'users'
 });
 
-module.exports = User;
+User.associate = (models) => {
+  User.belongsToMany(models.Organisation, { through: 'UserOrganisations', foreignKey: 'userId' });
+};
 
-// module.exports = (sequelize, DataTypes) => {
-//     const User = sequelize.define('User', {
-//       userId: {
-//         type: DataTypes.STRING,
-//         allowNull: false,
-//         unique: true
-//       },
-//       firstName: {
-//         type: DataTypes.STRING,
-//         allowNull: false
-//       },
-//       lastName: {
-//         type: DataTypes.STRING,
-//         allowNull: false
-//       },
-//       email: {
-//         type: DataTypes.STRING,
-//         allowNull: false,
-//         unique: true
-//       },
-//       password: {
-//         type: DataTypes.STRING,
-//         allowNull: false
-//       },
-//       phone: {
-//         type: DataTypes.STRING
-//       }
-//     });
-  
-//     User.associate = function(models) {
-//       User.belongsToMany(models.Organisation, {
-//         through: 'UserOrganisation',
-//         foreignKey: 'UserId'
-//       });
-//     };
-  
-//     return User;
-//   };
-  
+module.exports = User;
